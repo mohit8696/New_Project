@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 public class User {
     @Id
     private String userId;
-    @JsonIgnore
     private String password;
 
     private String name;

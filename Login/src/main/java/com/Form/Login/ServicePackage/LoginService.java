@@ -19,7 +19,7 @@ public class LoginService {
     public String addUser(User user) {
         List<User> userList= loginRepository.findAll();
         for(int i=0; i<userList.size();i++){
-            if(user.getUserId()==userList.get(i).getUserId()){
+            if(user.getUserId().equals(userList.get(i).getUserId())){
                 return "Already have an account";
             }
         }
