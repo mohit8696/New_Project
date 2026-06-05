@@ -30,25 +30,30 @@ public class LoginService {
 
     }
 
-    public ResponseEntity<String> loginUser(User user) {
+    public String loginUser(User user) {
        String id= user.getUserId();
        User ogUser=loginRepository.findById(id).orElse(null);
 
        if(ogUser!=null){
            String pass = user.getPassword();
            if(ogUser.getPassword().equals(pass)){
-               return ResponseEntity.ok("You are successfully Login");
+               return "successfully Login";
            }
 
        }
-       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-               .body("User not found");
+       return "User not found";
     }
 
 
-    public User userProfile(String id) {
-        User user= loginRepository.findById(id).orElseThrow();
-        return user;
+    public ResponseEntity<User> userProfile(String id) {
+
+            User user= loginRepository.findById(id).orElse(null);
+            if(user!=null) {
+                return ResponseEntity.ok(user);
+            }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(null);
+
 
     }
 }
