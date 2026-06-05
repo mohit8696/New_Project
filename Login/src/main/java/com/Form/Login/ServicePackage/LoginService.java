@@ -1,5 +1,7 @@
 package com.Form.Login.ServicePackage;
 
+import com.Form.Login.Admin;
+import com.Form.Login.LoginResponse;
 import com.Form.Login.RepositoryPackage.LoginRepository;
 import com.Form.Login.User;
 import org.springframework.http.HttpStatus;
@@ -30,18 +32,18 @@ public class LoginService {
 
     }
 
-    public String loginUser(User user) {
+    public LoginResponse loginUser(User user) {
        String id= user.getUserId();
        User ogUser=loginRepository.findById(id).orElse(null);
 
        if(ogUser!=null){
-           String pass = user.getPassword();
+           String pass =user.getPassword();
            if(ogUser.getPassword().equals(pass)){
-               return "successfully Login";
+               return new LoginResponse(user.getUserId(),"successfully Login");
            }
 
        }
-       return "User not found";
+       return new LoginResponse(null,"User not found");
     }
 
 
@@ -55,5 +57,21 @@ public class LoginService {
                 .body(null);
 
 
+    }
+
+    public String adminLogin(Admin admin) {
+        String adminId= admin.getAdminId();
+        String password= admin.getPassword();
+
+        if(adminId.equals("12345") && password.equals("admin")){
+            return "login successfull";
+        }
+
+        return "Unauthorized access";
+
+    }
+
+    public List<User> getAllUser() {
+       return loginRepository.findAll();
     }
 }
