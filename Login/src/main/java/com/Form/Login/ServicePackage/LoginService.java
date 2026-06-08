@@ -63,7 +63,7 @@ public class LoginService {
         String adminId= admin.getAdminId();
         String password= admin.getPassword();
 
-        if(adminId.equals("12345") && password.equals("admin")){
+        if(adminId.equals("admin") && password.equals("admin")){
             return "login successfull";
         }
 
@@ -73,5 +73,15 @@ public class LoginService {
 
     public List<User> getAllUser() {
        return loginRepository.findAll();
+    }
+
+    public String updateUser(User user) {
+        loginRepository.save(user);
+        return "Successfully updated";
+    }
+
+    public String  removeEmployee(String id) {
+        loginRepository.deleteById(id);
+        return "deleted";
     }
 }

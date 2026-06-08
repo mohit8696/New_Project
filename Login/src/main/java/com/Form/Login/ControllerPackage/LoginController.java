@@ -68,6 +68,33 @@ public class LoginController {
         return loginService.getAllUser();
     }
 
+    @PutMapping("/updateEmployee")
+    public ResponseEntity<String> updateUser(@RequestBody User user){
+
+        String returnedValue= loginService.updateUser(user);
+
+        if(returnedValue.equalsIgnoreCase("Successfully updated")){
+            return ResponseEntity.ok("Updated successfully");
+
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("not updated");
+
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/removeEmployee/{id}")
+    public ResponseEntity<String> removeEmployee(@PathVariable String id){
+        String returnedValue=loginService.removeEmployee(id);
+        if(returnedValue.equals("deleted")) {
+            return ResponseEntity.ok("Delete successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("not deleted");
+    }
+
 
 
 }
