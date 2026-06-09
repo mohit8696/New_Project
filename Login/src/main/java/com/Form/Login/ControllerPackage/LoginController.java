@@ -1,9 +1,7 @@
 package com.Form.Login.ControllerPackage;
 
-import com.Form.Login.Admin;
-import com.Form.Login.LoginResponse;
+import com.Form.Login.*;
 import com.Form.Login.ServicePackage.LoginService;
-import com.Form.Login.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -68,10 +66,11 @@ public class LoginController {
         return loginService.getAllUser();
     }
 
-    @PutMapping("/updateEmployee")
-    public ResponseEntity<String> updateUser(@RequestBody User user){
+    @PutMapping("/updateEmployee/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable String id,
+                                             @RequestBody UserUpdateDto dto){
 
-        String returnedValue= loginService.updateUser(user);
+        String returnedValue= loginService.updateUser(id,dto);
 
         if(returnedValue.equalsIgnoreCase("Successfully updated")){
             return ResponseEntity.ok("Updated successfully");
@@ -84,7 +83,6 @@ public class LoginController {
     }
 
 
-    @CrossOrigin(origins = "*")
     @DeleteMapping("/removeEmployee/{id}")
     public ResponseEntity<String> removeEmployee(@PathVariable String id){
         String returnedValue=loginService.removeEmployee(id);
@@ -94,6 +92,19 @@ public class LoginController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("not deleted");
     }
+
+    @PostMapping("/addEmployee")
+    public ResponseEntity<String> addEmployee(@RequestBody User user){
+        String response= loginService.addEmployee(user);
+        if(response.equals("success")){
+            return ResponseEntity.ok("Created Successfully");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("User not created");
+    }
+
+
+
 
 
 

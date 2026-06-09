@@ -1,9 +1,7 @@
 package com.Form.Login.ServicePackage;
 
-import com.Form.Login.Admin;
-import com.Form.Login.LoginResponse;
+import com.Form.Login.*;
 import com.Form.Login.RepositoryPackage.LoginRepository;
-import com.Form.Login.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -75,13 +73,28 @@ public class LoginService {
        return loginRepository.findAll();
     }
 
-    public String updateUser(User user) {
-        loginRepository.save(user);
+    public String updateUser(String id,UserUpdateDto dto) {
+        User savedUser= loginRepository.findById(id).orElse(null);
+        savedUser.setName(dto.getName());
+        savedUser.setEmail(dto.getEmail());
+        loginRepository.save(savedUser);
         return "Successfully updated";
     }
 
     public String  removeEmployee(String id) {
         loginRepository.deleteById(id);
         return "deleted";
+    }
+
+    public String addEmployee(User user) {
+        String newUserId= user.getUserId();
+        List<User> list= loginRepository.findAll();
+        for(int i=0;i<list.size();i++){
+           if( list.get(i).getUserId()==newUserId){
+               return "user with this id already exist";
+           }
+        }
+        loginRepository.save(user);
+        return "success";
     }
 }
