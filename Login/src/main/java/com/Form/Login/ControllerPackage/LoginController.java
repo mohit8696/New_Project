@@ -27,12 +27,18 @@ public class LoginController {
 
     }
 
+
+
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody User user){
+    public ResponseEntity<LoginResponse> adminLogin(@RequestBody User user){
 
         LoginResponse response= loginService.loginUser(user);
-        if(response.getMessage().equalsIgnoreCase("successfully login")) {
+        if(response.getMessage().equalsIgnoreCase("user login")) {
             return ResponseEntity.ok(response);
+        }
+        else if (response.getMessage().equalsIgnoreCase("admin login")) {
+            return ResponseEntity.ok(response);
+
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(response);
@@ -49,16 +55,6 @@ public class LoginController {
         return "Welcome to the Dashboard";
     }
 
-    @PostMapping("/admin/login")
-    public ResponseEntity<String> adminLogin(@RequestBody Admin admin){
-        String status=loginService.adminLogin(admin);
-        if(status.equals("login successfull")){
-            return ResponseEntity.ok("Admin login successfully");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Unauthorized access");
-
-    }
 
 
     @GetMapping("/employees")

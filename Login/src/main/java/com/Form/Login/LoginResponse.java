@@ -3,35 +3,17 @@ package com.Form.Login;
 public class LoginResponse {
     private String userId;
     private String message;
-    private String email;
-    private String name;
+    private String userType;
 
 
-    public LoginResponse(String userId, String message) {
+    public LoginResponse(String userId, String userType) {
         this.userId = userId;
-        this.message = message;
+        this.userType= userType;
     }
-
-    public LoginResponse(String userId, String email, String name) {
+    public LoginResponse(String userId, String userType, String message){
         this.userId = userId;
-        this.email = email;
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.userType= userType;
+        this.message=message;
     }
 
     public String getUserId() {
@@ -48,5 +30,13 @@ public class LoginResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

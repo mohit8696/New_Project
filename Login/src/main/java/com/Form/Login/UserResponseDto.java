@@ -13,6 +13,7 @@ public class UserResponseDto {
         this.userId = userId;
         this.name = name;
         this.email = email;
+
     }
 
     public UserResponseDto() {
@@ -37,4 +38,7 @@ public class UserResponseDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+
 }

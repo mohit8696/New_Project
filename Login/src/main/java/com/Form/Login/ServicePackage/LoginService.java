@@ -34,14 +34,22 @@ public class LoginService {
        String id= user.getUserId();
        User ogUser=loginRepository.findById(id).orElse(null);
 
-       if(ogUser!=null){
+
+       if(ogUser!=null && ogUser.getUserType().equals("user")){
            String pass =user.getPassword();
            if(ogUser.getPassword().equals(pass)){
-               return new LoginResponse(user.getUserId(),"successfully Login");
+               return new LoginResponse(user.getUserId(),"user","user login");
            }
 
        }
-       return new LoginResponse(null,"User not found");
+       else if (ogUser!=null && ogUser.getUserType().equals("admin")) {
+           String pass= user.getPassword();
+           if (ogUser.getPassword().equals(pass)){
+               return new LoginResponse(user.getUserId(),"admin","admin login");
+           }
+
+       }
+       return new LoginResponse(null, "null","unathurized login");
     }
 
 
@@ -61,17 +69,7 @@ public class LoginService {
 
     }
 
-    public String adminLogin(Admin admin) {
-        String adminId= admin.getAdminId();
-        String password= admin.getPassword();
 
-        if(adminId.equals("admin") && password.equals("admin")){
-            return "login successfull";
-        }
-
-        return "Unauthorized access";
-
-    }
 
     public List<User> getAllUser() {
        return loginRepository.findAll();
