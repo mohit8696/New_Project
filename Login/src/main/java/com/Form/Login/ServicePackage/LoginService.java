@@ -45,11 +45,15 @@ public class LoginService {
     }
 
 
-    public ResponseEntity<User> userProfile(String id) {
+    public ResponseEntity<UserResponseDto> userProfile(String id) {
 
             User user= loginRepository.findById(id).orElse(null);
             if(user!=null) {
-                return ResponseEntity.ok(user);
+                UserResponseDto userResponse = new UserResponseDto();
+                userResponse.setUserId(user.getUserId());
+                userResponse.setEmail(user.getEmail());
+                userResponse.setName(user.getName());
+                return ResponseEntity.ok(userResponse);
             }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(null);
@@ -96,5 +100,17 @@ public class LoginService {
         }
         loginRepository.save(user);
         return "success";
+    }
+
+    public String resetPassword(String id, String name) {
+        User user= loginRepository.findById(id).orElse(null);
+
+        if(user.getName().equalsIgnoreCase(name)){
+            String password=user.getPassword();
+
+            return password;
+        }
+        return "invalid";
+
     }
 }

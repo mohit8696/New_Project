@@ -40,7 +40,7 @@ public class LoginController {
 
 
     @GetMapping("/profile/{id}")
-    public ResponseEntity<User> userProfile(@PathVariable String id){
+    public ResponseEntity<UserResponseDto> userProfile(@PathVariable String id){
          return loginService.userProfile(id);
     }
 
@@ -101,6 +101,20 @@ public class LoginController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("User not created");
+    }
+
+
+    @PostMapping("/login/forgotPassword/{id}")
+    public ResponseEntity<String> resetPassword(@PathVariable String id,
+                                                @RequestBody String name){
+        String response= loginService.resetPassword(id, name);
+
+        if(response.equals("invalid")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(response);
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 
