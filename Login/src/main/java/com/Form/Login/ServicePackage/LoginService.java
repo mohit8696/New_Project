@@ -2,6 +2,7 @@ package com.Form.Login.ServicePackage;
 
 import com.Form.Login.*;
 import com.Form.Login.RepositoryPackage.LoginRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,14 +62,12 @@ public class LoginService {
                 userResponse.setUserId(user.getUserId());
                 userResponse.setEmail(user.getEmail());
                 userResponse.setName(user.getName());
+                userResponse.setUserType(user.getUserType());
                 return ResponseEntity.ok(userResponse);
             }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(null);
-
-
     }
-
 
 
     public List<User> getAllUser() {
@@ -77,13 +76,22 @@ public class LoginService {
 
     public String updateUser(String id,UserUpdateDto dto) {
         User savedUser= loginRepository.findById(id).orElse(null);
+        if(savedUser.getUserType().equals("admin")){
+            return "You don't have as much authority";
+        }
         savedUser.setName(dto.getName());
         savedUser.setEmail(dto.getEmail());
+        savedUser.setUserType(dto.getUserType());
         loginRepository.save(savedUser);
         return "Successfully updated";
     }
 
     public String  removeEmployee(String id) {
+        User user= loginRepository.findById(id).orElse(null);
+        String userType= user.getUserType();
+        if(userType.equals("admin")){
+            return "You can't delete admin";
+        }
         loginRepository.deleteById(id);
         return "deleted";
     }
@@ -100,15 +108,24 @@ public class LoginService {
         return "success";
     }
 
-    public String resetPassword(String id, String name) {
+    public String resetPassword(String id, String email) {
         User user= loginRepository.findById(id).orElse(null);
 
-        if(user.getName().equalsIgnoreCase(name)){
-            String password=user.getPassword();
+        if(user!=null){
+            if(user.getEmail().equalsIgnoreCase(email)){
+                String password=user.getPassword();
 
-            return password;
+                return password;
+            }
         }
+
         return "invalid";
+
+    }
+    public List<User> searchByKeyword(String keyword){
+        List<User> users=loginRepository.findByKeyword(keyword);
+
+        return users;
 
     }
 }

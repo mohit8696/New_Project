@@ -4,15 +4,17 @@ public class UserResponseDto {
     private String userId;
     private String name;
     private String email;
+    private String userType;
 
     public String getUserId() {
         return userId;
     }
 
-    public UserResponseDto(String userId, String name, String email) {
+    public UserResponseDto(String userId, String name, String email, String userType) {
         this.userId = userId;
         this.name = name;
         this.email = email;
+        this.userType=userType;
 
     }
 
@@ -40,5 +42,11 @@ public class UserResponseDto {
     }
 
 
+    public String getUserType() {
+        return userType;
+    }
 
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 }

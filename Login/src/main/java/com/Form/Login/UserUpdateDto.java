@@ -3,16 +3,18 @@ package com.Form.Login;
 public class UserUpdateDto {
     private String name;
     private String email;
-    private String userId;
+    private String userType;
 
     public UserUpdateDto() {
     }
 
-    public UserUpdateDto(String name, String email, String userId) {
+    public UserUpdateDto(String name, String email, String userType) {
         this.name = name;
         this.email = email;
-        this.userId = userId;
+        this.userType = userType;
     }
+
+
 
     public String getName() {
         return name;
@@ -30,11 +32,11 @@ public class UserUpdateDto {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserType() {
+        return userType;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

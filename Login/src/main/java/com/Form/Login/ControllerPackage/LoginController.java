@@ -30,7 +30,7 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> adminLogin(@RequestBody User user){
+    public ResponseEntity<LoginResponse> loginPage(@RequestBody User user){
 
         LoginResponse response= loginService.loginUser(user);
         if(response.getMessage().equalsIgnoreCase("user login")) {
@@ -74,7 +74,7 @@ public class LoginController {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("not updated");
+                .body("You don't have as much authority");
 
     }
 
@@ -86,7 +86,7 @@ public class LoginController {
             return ResponseEntity.ok("Delete successfully");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("not deleted");
+                .body("You can't delete admin");
     }
 
     @PostMapping("/addEmployee")
@@ -102,15 +102,21 @@ public class LoginController {
 
     @PostMapping("/login/forgotPassword/{id}")
     public ResponseEntity<String> resetPassword(@PathVariable String id,
-                                                @RequestBody String name){
-        String response= loginService.resetPassword(id, name);
+                                                @RequestBody String email){
+        String response= loginService.resetPassword(id, email);
 
         if(response.equals("invalid")){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(response);
+                    .body("Invalid userId or emailid");
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/login/search")
+    public ResponseEntity<List<User>> searchByKeyword(@RequestParam String keyword){
+        List<User> users=loginService.searchByKeyword(keyword);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 
